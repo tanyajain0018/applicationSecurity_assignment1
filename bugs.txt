@@ -1,0 +1,23 @@
+1) The first test case, crash1.gft, takes advantage of the fact that giftcardreader.c calls malloc on
+ret_val->num_bytes. Therefore, by setting num_bytes to a negative integer in crash1.gft, I was able 
+to get the program to crash and create a segmentation error. 
+
+
+
+
+2) The second test case, crash2.gft, sets number_of_gift_card_records to -1 and when calling fwrite(), I
+then changed the sizes to 1 byte for  all the elements written to crash2.gft. This together caused a 
+segmentation error because a lot of for-loops in giftcardreader.c depended upon 
+number_of_gift_card_records which was now set to -1 and it lead to elements being illegally accessed. 
+
+
+
+
+3) For the third case hang.gft I thought about what could cause the program giftcardreader.c to loop 
+infinitely. The only thing that had the potential to do that was the while(1) loop in the animate function. 
+I had to make sure pc never got greater than (program +256) that way it would never break out of that while loop. 
+Therefore, for that, I  took advantage of case 0x09 which changed arg1 from unsigned char to signed char l
+eaving it open to be changed into a negative number. Therefore, by carefully passing in program value to 
+lead directly to case 9 and having arg1 become -3 so it cancels out the pc += 3, I got pc to never 
+change and therefore it repeatedly stayed in the while loop. To fix that, I just had to remove 
+the word char from case 0x09 that way arg1 stays as unsigned char. 
