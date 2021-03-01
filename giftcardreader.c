@@ -8,7 +8,6 @@
 
 
 #include "giftcard.h"
-
 #include <stdio.h>
 #include <strings.h>
 
@@ -187,7 +186,10 @@ struct this_gift_card *gift_card_reader(FILE *input_fd) {
 		struct gift_card_data *gcd_ptr;
 		/* JAC: Why aren't return types checked? */
 		fread(&ret_val->num_bytes, 4,1, input_fd);
-
+       // if(ret_val->num_bytes < 0){ // will fix crash 1 where num_bytes is assigned to a negative number
+         //   printf("less than 0")
+           // return NULL;  
+        //}
 		// Make something the size of the rest and read it in
 		ptr = malloc(ret_val->num_bytes);
 		fread(ptr, ret_val->num_bytes, 1, input_fd);
@@ -259,11 +261,12 @@ struct this_gift_card *gift_card_reader(FILE *input_fd) {
 	return ret_val;
 }
 
-// BDG: why not a local variable here?
+// BDG: why not a local variable here?s
 struct this_gift_card *thisone;
 
 int main(int argc, char **argv) {
     // BDG: no argument checking?
+    printf("hi");
 	FILE *input_fd = fopen(argv[2],"r");
 	thisone = gift_card_reader(input_fd);
 	if (argv[1][0] == '1') print_gift_card_info(thisone);

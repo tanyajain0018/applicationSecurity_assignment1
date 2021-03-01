@@ -1,13 +1,14 @@
 /*
   * Gift Card Example Writer
   * Original Author: Shoddycorp's Cut-Rate Contracting
-  * Maintainer: ???
+  * Maintainer: Tanya Jain
   * Comments added by Justin Cappos (JAC)
   * Modification Date: 8 July 2020
   */
 
  #include <stdio.h>
  #include "giftcard.h"
+
  /* JAC: Why is this included? */
  #include <time.h>
 
@@ -15,7 +16,7 @@
  struct gift_card_data examplegcd;
  struct gift_card_record_data examplegcrd;
  struct gift_card_amount_change examplegcac;
- struct gift_card_program hang; 
+ struct gift_card_program hang; // used to hang the program
 
 
  // Break it up so that we don't have long functions!  Good programming style!
