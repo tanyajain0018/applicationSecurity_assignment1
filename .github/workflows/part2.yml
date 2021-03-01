@@ -14,9 +14,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run part 2 test files
       - run: gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 ./part2/crash1.gft
       - run: gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 ./part2/crash2.gft
       - run: gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 ./part2/hang.gft
