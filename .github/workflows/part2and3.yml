@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Part 2 actions
+name: Part 2 and 3 actions
 
 # Controls when the action will run. 
 on: [push]
@@ -17,3 +17,8 @@ jobs:
       - run: gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 ./part2/crash1.gft
       - run: gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 ./part2/crash2.gft
       - run: gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 ./part2/hang.gft
+      - run: gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 ./part3/cov1.gft
+      - run: gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 ./part3/cov2.gft
+      - run: gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 ./part3/fuzzer1.gft
+      - run: gcc -o giftcardreader giftcardreader.c && ./giftcardreader 1 ./part3/fuzzer2.gft
+
