@@ -1,0 +1,14 @@
+1) cov1.gft is a test case that reaches case 10 in the animate function as the coverage report showed 
+that none of my test cases reached case 10.
+
+2) For cov2.gft, I set type of record to equal 2 so that the test case can reach all the uncovered if-statements 
+that rely on gcrd_ptr->type_of_record to equal 2.
+
+3) For fuzzer1.gft, after running for 2 hours, AFL produced 6 hangs. Out of those only 2 worked on my terminal 
+and caused the program to hang. Both of those were due to the same bug, which was situated in Case 10 of the animate function. 
+I just had to remove the word char from the if-statement so that arg1 stayed unsigned. This fixed fuzzer1.gft.
+
+4) For fuzzer2.gft, AFL produced numerous crashes. For the one I fixed, I used printf statements to find the 
+cause of the error which showed that it was also because of the animate function specifically case 7. 
+Instead of using "puts(msg)" inside case 7, I changed it to printf msg. That fixed the bug. 
+ 

@@ -65,7 +65,7 @@
 #include<stdlib.h>
 
 struct this_gift_card {
-	unsigned int num_bytes; // had to change this to unsigned to fix my crash1
+	unsigned int num_bytes; //had to change this to unsigned to fix my crash1.gft
 	void *gift_card_data;
 }; 
 

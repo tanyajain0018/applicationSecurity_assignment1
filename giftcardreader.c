@@ -14,6 +14,7 @@
 // interpreter for THX-1138 assembly
 void animate(char *msg, unsigned char *program) {
     unsigned char regs[16];
+    printf("reached animate");
     char *mptr = msg;
     unsigned char *pc = program;
     int i = 0;
@@ -25,42 +26,65 @@ void animate(char *msg, unsigned char *program) {
         arg2 = *(pc+2);
         switch (*pc) {
             case 0x00:
+               // printf("Case 0");
                 break;
             case 0x01:
-                regs[arg1] = *mptr;
+                printf("Case 1");
+                if(arg1 < 16) {
+                    regs[arg1] = *mptr;
+                }
                 break;
             case 0x02:
-                *mptr = regs[arg1];
+                printf("Case 2");
+                if(arg1 < 16) {
+                    *mptr = regs[arg1];
+                }
                 break;
             case 0x03:
+                printf("Case 3");
                 mptr += (char)arg1;
                 break;
             case 0x04:
+                printf("Case 4");
                 regs[arg2] = arg1;
                 break;
             case 0x05:
+                printf("Case 5");
                 regs[arg1] ^= regs[arg2];
                 zf = !regs[arg1];
                 break;
             case 0x06:
+                printf("Case 6");
                 regs[arg1] += regs[arg2];
                 zf = !regs[arg1];
                 break;
             case 0x07:
-                puts(msg);
+                printf("Case 7");
+                //if(msg){
+                  //  puts(msg);
+                //}
+                printf("%s", msg);
+                printf("finished case 7");
+                pc = program + 257;
                 break;
             case 0x08:
+                 printf("Case 8");
                 goto done;
             case 0x09:
-                printf("yayyy");
+                printf("Case 9");
                 pc += arg1;  // removed char from here to keep arg1 unsigned. fixes the hanging issue. 
                 break;
             case 0x10:
-                if (zf) pc += (char)arg1;
+                printf(" Case 10 ");  // used for cov1
+                //if (zf) pc += (char)arg1;  // this was causing all the hangs that AFL found for me. 
+                if (zf) pc += arg1;    // I had to remove the char here as well to keep arg1 unsigned. 
                 break;
         }
         pc+=3;
-        if (pc > program+256) break;
+        if (pc > program+256) {
+            printf("left animated");
+            break;
+        }
     }
 done:
     return;
@@ -112,8 +136,10 @@ void print_gift_card_info(struct this_gift_card *thisone) {
             gcp_ptr = gcrd_ptr->actual_record;
 			printf("      record_type: animated message\n");
             printf("      message: %s\n", gcp_ptr->message);
+           // printf(" prgram: %s\n", gcp_ptr->program);
             printf("  [running embedded program]  \n");
             animate(gcp_ptr->message, gcp_ptr->program);
+           // printf("after_animate");
 		}
 	}
 	printf("  Total value: %d\n\n",get_gift_card_value(thisone));
@@ -187,7 +213,6 @@ struct this_gift_card *gift_card_reader(FILE *input_fd) {
 		/* JAC: Why aren't return types checked? */
 		fread(&ret_val->num_bytes, 4,1, input_fd);
        // if(ret_val->num_bytes < 0){ // will fix crash 1 where num_bytes is assigned to a negative number
-         //   printf("less than 0")
            // return NULL;  
         //}
 		// Make something the size of the rest and read it in
@@ -266,7 +291,6 @@ struct this_gift_card *thisone;
 
 int main(int argc, char **argv) {
     // BDG: no argument checking?
-    printf("hi");
 	FILE *input_fd = fopen(argv[2],"r");
 	thisone = gift_card_reader(input_fd);
 	if (argv[1][0] == '1') print_gift_card_info(thisone);
